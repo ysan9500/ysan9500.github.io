@@ -1,52 +1,45 @@
-<!DOCTYPE html>
-<html lang="{{ site.isolang }}" itemscope itemtype="http://schema.org/WebPage">
+<!doctype html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
 
-{% include head.html %}
+  {% include head.html %}
 
-<body class="wrap wider">
-	<div class="grid">
-		<div id="/home" class="unit one-third">
-			<div class="grid">
-				<div class="unit whole" id="/home">
-					<h1>{{ site.title }}</h1>
-					<p>{{ site.description }}</p>
-				</div>
-				<div class="unit whole" id="/contact">
-					<a href="https://twitter.com/{{ site.twitter_username }}" class="twitter-icon btn"><i class="icon ion-social-twitter"></i></a>
-					<a href="https://github.com/{{ site.github_username }}" class="github-icon btn"><i class="icon ion-social-github"></i></a>
-					<a href="mailto:{{ site.email }}" class="mail-icon btn"><i class="icon ion-email"></i></a>
-					<a href="feed.xml" class="rss-icon btn"><i class="icon ion-social-rss"></i></a>
-				</div>
-				<div class="unit whole hide-on-mobiles" id="/projects">
-					{% include projects.html %}
-				</div>
-				<div class="unit whole hide-on-mobiles" id="/impressum">
-					{% include imprint.html %}
-				</div>
-			</div>
-		</div>
-		<div class="unit two-thirds blog-column">
-			<div class="grid">
-				<div class="unit whole" id="/blog">
-					<h1>Blog</h1>
-				</div>
-				{{ content }}
-				<div class="unit whole" id="/subscribe">
-					<p><a href="feed.xml">RSS</a> & <a href="atom.xml">ATOM</a> Feed<br>Built with Jekyll, Code on <a href="https://github.com/lukas-h/onepage">Github</a></p>
-				</div>
-			</div>
-		</div>
+  <body>
 
-		<div class="unit whole hide-on-desktops" id="/projects">
-			{% include projects.html %}
-		</div>
-		<div class="unit whole hide-on-desktops" id="/impressum">
-			{% include imprint.html %}
-		</div>
-	</div>
+    <div class="container pure-g">
+      {%- assign cover_bg_color = site.cover_bg_color | default: "rgb(40, 73, 77)" -%}
+      {%- assign cover_color    = site.cover_color    | default: "rgb(255, 255, 255)" -%}
+      {%- assign cover_image    = site.cover_image -%}
+      {%- if page.cover_bg_color -%}
+        {%- assign cover_bg_color  = page.cover_bg_color -%}
+      {%- endif -%}
+      {%- if page.cover_color -%}
+        {%- assign cover_color     = page.cover_color -%}
+      {%- endif -%}
+      {%- if page.cover_image -%}
+        {%- assign cover_image     = page.cover_image -%}
+      {%- endif -%}
+      <div class="sidebar-left pure-u-1 pure-u-md-1-4" style="background-color: {{ cover_bg_color }}; color: {{ cover_color}}; {% if cover_image %}background-image: url({{ cover_image | relative_url }});{% endif %}">
+        {%- include sidebar-left.html -%}
+      </div>
 
-	{% include foot.html %}
+      <div class="content pure-u-1 pure-u-md-1-2">
+        {%- include content.html -%}
+      </div>
+      <div class="sidebar-right pure-u-1 pure-u-md-1-4">
+        {%- include sidebar-right.html -%}
+      </div>
+    </div>
 
-</body>
+    <script async src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
 
+    {%- include scroll.html -%}
+
+    {%- if page.math -%}
+      {% include mathjax.html %}
+    {%- endif -%}
+
+    {%- if jekyll.environment == 'production' and site.google_analytics -%}
+      {%- include google-analytics.html -%}
+    {%- endif -%}
+  </body>
 </html>
